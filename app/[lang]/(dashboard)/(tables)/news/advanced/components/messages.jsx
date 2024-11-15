@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Undo2 } from "lucide-react";
 import Image from "next/image";
+import { CheckCheck, Check } from "lucide-react";
+import defaultUser from "@/public/images/avatar/default-user.png";
+
 const chatAction = [
   {
     label: "Remove",
@@ -36,14 +39,18 @@ const Messages = ({
   handlePinMessage,
   pinnedMessages,
 }) => {
-  const { chat_id: chatId, text: chatMessage, sent_time: time, user } = message;
+  const {
+    chat_id: chatId,
+    text: chatMessage,
+    sent_time: time,
+    user,
+    is_read: isRead,
+  } = message;
   const { avatar } = contact;
   // State to manage pin status
   const isMessagePinned = pinnedMessages.some(
     (pinnedMessage) => pinnedMessage.index === index
   );
-
-  console.log(avatar, profile.avatar, "avatar", message);
 
   const handlePinMessageLocal = (note) => {
     const obj = {
@@ -77,7 +84,7 @@ const Messages = ({
             <div className="flex space-x-2 items-start justify-end group w-full rtl:space-x-reverse mb-4">
               <div className=" flex flex-col  gap-1">
                 <div className="flex items-center gap-1">
-                  <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible ">
+                  {/* <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible ">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <span className="w-7 h-7 rounded-full bg-default-200 flex items-center justify-center">
@@ -100,10 +107,15 @@ const Messages = ({
                         <DropdownMenuItem>Forward</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
-                  </div>
+                  </div> */}
                   <div className="whitespace-pre-wrap break-all">
                     <div className="bg-primary/70 text-primary-foreground  text-sm  py-2 px-3 rounded-2xl  flex-1  ">
-                      {chatMessage}
+                      {chatMessage}{" "}
+                      {isRead ? (
+                        <CheckCheck color="blue" size={18} />
+                      ) : (
+                        <Check color="grey" size={18} />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -114,8 +126,10 @@ const Messages = ({
               <div className="flex-none self-end -translate-y-5">
                 <div className="h-8 w-8 rounded-full ">
                   <Image
-                    src={profile?.avatar}
-                    alt={avatar}
+                    src={
+                      profile?.avatar === "-" ? defaultUser : profile?.avatar
+                    }
+                    alt={avatar === "-" ? "" : avatar}
                     className="block w-full h-full object-cover rounded-full"
                     width={100}
                     height={100}
@@ -129,8 +143,8 @@ const Messages = ({
             <div className="flex-none self-end -translate-y-5">
               <div className="h-8 w-8 rounded-full">
                 <Image
-                  src={avatar}
-                  alt={avatar}
+                  src={avatar === "-" ? defaultUser : avatar}
+                  alt={avatar === "-" ? "" : avatar}
                   className="block w-full h-full object-cover rounded-full"
                   width={100}
                   height={100}

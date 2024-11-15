@@ -177,6 +177,7 @@ export function Reports() {
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
   const [socket, setSocket] = React.useState(null);
+  // const socket = React.useRef(null);
   const [confirmSOSData, setConfirmSOSData] = React.useState({});
   const [detailSOS, setDetailSOS] = React.useState({});
   const user = localStorage.getItem("user")
@@ -416,7 +417,6 @@ export function Reports() {
   }, []);
 
   const join = (socket) => {
-    console.log("not join");
     if (socket && socket.readyState === WebSocket.OPEN) {
       console.log("join");
       socket.send(
@@ -520,8 +520,6 @@ export function Reports() {
           );
         }
 
-        console.log(parsedData, "parsedData");
-
         if (parsedData.type === "message") {
           messageMutation.mutate(parsedData);
         }
@@ -540,9 +538,11 @@ export function Reports() {
       };
     };
 
-    return () => {
-      connectWs();
-    };
+    connectWs();
+
+    // return () => {
+    //   connectWs();
+    // };
   }, []);
 
   const getDetailReporting = async (sosId) => {

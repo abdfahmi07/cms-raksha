@@ -51,7 +51,7 @@ const MessageHeader = ({
           </span>
         </div>
       </div>
-      <div className="flex-none space-x-2 rtl:space-x-reverse">
+      {/* <div className="flex-none space-x-2 rtl:space-x-reverse">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -81,7 +81,7 @@ const MessageHeader = ({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      </div>
+      </div> */}
     </div>
   );
 };
