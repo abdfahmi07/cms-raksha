@@ -528,9 +528,6 @@ export function Reports() {
 
       ws.onclose = () => {
         console.log("WebSocket connection closed");
-        // setTimeout(function () {
-        //   connectWs();
-        // }, 1000);
       };
 
       ws.onerror = (error) => {
