@@ -34,7 +34,7 @@ import Player from "next-video/player";
 import { toast } from "react-hot-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { data } from "./data";
+import { data } from "../list-reporting/data";
 import { Icon } from "@iconify/react";
 import { cn } from "@/lib/utils";
 import axios from "axios";
@@ -56,16 +56,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import MessageHeader from "./advanced/components/message-header";
-import SearchMessages from "./advanced/components/contact-info/search-messages";
+import MessageHeader from "../list-reporting/advanced/components/message-header";
+import SearchMessages from "../list-reporting/advanced/components/contact-info/search-messages";
 // import MyProfileHeader from "./my-profile-header";
-import EmptyMessage from "./advanced/components/empty-message";
-import Messages from "./advanced/components/messages";
-import Loader from "./advanced/components/loader";
+import EmptyMessage from "../list-reporting/advanced/components/empty-message";
+import Messages from "../list-reporting/advanced/components/messages";
+import Loader from "../list-reporting/advanced/components/loader";
 import { isObjectNotEmpty } from "@/lib/utils";
-import PinnedMessages from "./advanced/components/pin-messages";
+import PinnedMessages from "../list-reporting/advanced/components/pin-messages";
 // import ForwardMessage from "./forward-message";
-import ContactInfo from "./advanced/components/contact-info";
+import ContactInfo from "../list-reporting/advanced/components/contact-info";
 import { useMediaQuery } from "@/hooks/use-media-query";
 // import { cn } from "@/lib/utils";
 import {
@@ -74,8 +74,8 @@ import {
   getProfile,
   sendMessage,
   deleteMessage,
-} from "./advanced/components/chat-config";
-import MessageFooter from "./advanced/components/message-footer";
+} from "../list-reporting/advanced/components/chat-config";
+import MessageFooter from "../list-reporting/advanced/components/message-footer";
 import NewsSheet from "./news-sheet";
 
 const columns = [
@@ -170,7 +170,7 @@ const columns = [
   },
 ];
 
-export function BasicDataTable() {
+export function NewsList() {
   const [sorting, setSorting] = React.useState([]);
   const [rows, setRows] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -385,4 +385,4 @@ export function BasicDataTable() {
   );
 }
 
-export default BasicDataTable;
+export default NewsList;

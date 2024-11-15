@@ -33,7 +33,7 @@ import {
 import { toast } from "react-hot-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { data } from "./data";
+import { data } from "../news/data";
 import { Icon } from "@iconify/react";
 import { cn } from "@/lib/utils";
 import axios from "axios";
@@ -55,16 +55,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import MessageHeader from "./advanced/components/message-header";
-import SearchMessages from "./advanced/components/contact-info/search-messages";
+import MessageHeader from "../news/advanced/components/message-header";
+import SearchMessages from "../news/advanced/components/contact-info/search-messages";
 // import MyProfileHeader from "./my-profile-header";
-import EmptyMessage from "./advanced/components/empty-message";
-import Messages from "./advanced/components/messages";
-import Loader from "./advanced/components/loader";
+import EmptyMessage from "../news/advanced/components/empty-message";
+import Messages from "../news/advanced/components/messages";
+import Loader from "../news/advanced/components/loader";
 import { isObjectNotEmpty } from "@/lib/utils";
-import PinnedMessages from "./advanced/components/pin-messages";
+import PinnedMessages from "../news/advanced/components/pin-messages";
 // import ForwardMessage from "./forward-message";
-import ContactInfo from "./advanced/components/contact-info";
+import ContactInfo from "../news/advanced/components/contact-info";
 import { useMediaQuery } from "@/hooks/use-media-query";
 // import { cn } from "@/lib/utils";
 import {
@@ -73,8 +73,8 @@ import {
   getProfile,
   sendMessage,
   deleteMessage,
-} from "./advanced/components/chat-config";
-import MessageFooter from "./advanced/components/message-footer";
+} from "../news/advanced/components/chat-config";
+import MessageFooter from "../news/advanced/components/message-footer";
 import Player from "next-video/player";
 import socketIO from "socket.io-client";
 
@@ -170,7 +170,7 @@ const columns = [
   },
 ];
 
-export function BasicDataTable() {
+export function Reports() {
   const [sorting, setSorting] = React.useState([]);
   const [rows, setRows] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -802,4 +802,4 @@ export function BasicDataTable() {
   );
 }
 
-export default BasicDataTable;
+export default Reports;

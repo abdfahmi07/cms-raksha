@@ -1,8 +1,9 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import BasicDataTable from "./basic-table";
+import BasicDataTable from "../news/news-list";
 import AdvancedTable from "./advanced";
 import DraggableTable from "./draggable-table";
+import Reports from "./reports";
 
 const DataTablePage = () => {
   const columns = ["Id", "Name", "Email", "Age", "Point"];
@@ -26,7 +27,7 @@ const DataTablePage = () => {
           <CardTitle>List Reporting</CardTitle>
         </CardHeader>
         <CardContent className="p-0"> */}
-      <BasicDataTable />
+      <Reports />
       {/* </CardContent>
       </Card> */}
 
