@@ -416,6 +416,7 @@ export function Reports() {
   }, []);
 
   const join = (socket) => {
+    console.log("not join");
     if (socket && socket.readyState === WebSocket.OPEN) {
       console.log("join");
       socket.send(
@@ -428,6 +429,7 @@ export function Reports() {
   };
 
   const confirmSOS = (event, sosId) => {
+    console.log("not_confirm_sos");
     if (socket && socket.readyState === WebSocket.OPEN) {
       console.log("confirm_sos");
       socket.send(
