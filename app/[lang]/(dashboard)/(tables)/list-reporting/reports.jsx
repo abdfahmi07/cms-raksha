@@ -486,19 +486,23 @@ export function Reports() {
       ws.onmessage = (event) => {
         const parsedData = JSON.parse(event.data);
 
-        if (parsedData.type !== "user_online") {
+        if (parsedData.type === "sos") {
           setRows((prevRows) => [
             ...prevRows,
             {
               id: parsedData.id,
               location: parsedData.location,
               time: parsedData.time,
-              country: "-",
+              lat: parsedData.lat,
+              lng: parsedData.lng,
+              country: parsedData.country,
+              media: parsedData.media,
               is_confirm: false,
               sender: {
                 id: "-",
                 name: parsedData.username,
               },
+              type: parsedData.media_type,
               agent: {
                 id: "-",
                 name: "-",
@@ -511,6 +515,8 @@ export function Reports() {
             },
           ]);
         }
+
+        console.log(parsedData);
 
         if (parsedData.type === "confirm-sos") {
           // setIsConfirmReport(parsedData.is_confirm);
@@ -669,7 +675,10 @@ export function Reports() {
                               height={500}
                             />
                           ) : (
-                            <Player src={row.media} />
+                            <Player
+                              src={row.media}
+                              style={{ height: "12rem" }}
+                            />
                           )}
                         </div>
                         <div className="p-4">
@@ -678,14 +687,14 @@ export function Reports() {
                               <p className="text-muted-foreground text-sm">
                                 Name
                               </p>
-                              <p className="text-sm">{row.sender.name}</p>
+                              <p className="text-sm">{row?.sender?.name}</p>
                             </div>
                             <div className="flex flex-col gap-y-2">
                               <p className="text-muted-foreground text-sm">
                                 Location
                               </p>
                               <p className="text-sm">
-                                {row.location.length > 30 &&
+                                {row?.location?.length > 30 &&
                                   `${row.location.substring(0, 30)}...`}
                               </p>
                             </div>
@@ -739,7 +748,10 @@ export function Reports() {
                             height={500}
                           />
                         ) : (
-                          <Player src={row.media} style={{ width: "30rem" }} />
+                          <Player
+                            src={row.media}
+                            style={{ width: "30rem", height: "20rem" }}
+                          />
                         )}
                         <div className="flex flex-col gap-y-3">
                           <div className="flex flex-col gap-y-2">
