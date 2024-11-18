@@ -715,8 +715,9 @@ export function Reports() {
                               <Button
                                 className="flex-1 exclude-element"
                                 onClick={(event) => confirmSOS(event, row.id)}
+                                disabled={row.is_confirm}
                               >
-                                Confirm
+                                {row.is_confirm ? "Confirmed" : "Confirm"}
                               </Button>
                             </div>
                           </div>
@@ -790,8 +791,9 @@ export function Reports() {
                         <Button
                           type="submit"
                           onClick={(event) => confirmSOS(event, detailSOS.id)}
+                          disabled={row.is_confirm}
                         >
-                          Confirm
+                          {row.is_confirm ? "Confirmed" : "Confirm"}
                         </Button>
                       </DialogFooter>
                     </DialogContent>

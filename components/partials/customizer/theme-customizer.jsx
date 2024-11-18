@@ -39,7 +39,7 @@ const ThemeCustomize = ({
 
   return (
     <Sheet>
-      <SheetTrigger asChild>{trigger}</SheetTrigger>
+      {/* <SheetTrigger asChild>{trigger}</SheetTrigger> */}
       <SheetContent
         side={isRtl ? "left" : "right"}
         overlayClass=" bg-transparent backdrop-blur-none"
