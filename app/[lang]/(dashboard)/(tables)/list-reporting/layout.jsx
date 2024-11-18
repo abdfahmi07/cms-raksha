@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Data Table",
+  title: "List Reporting",
 };
 
 const Layout = ({ children }) => {

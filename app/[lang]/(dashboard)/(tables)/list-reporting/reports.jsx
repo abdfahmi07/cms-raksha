@@ -77,6 +77,13 @@ import {
 import MessageFooter from "../news/advanced/components/message-footer";
 import Player from "next-video/player";
 import socketIO from "socket.io-client";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const columns = [
   // {
@@ -186,6 +193,7 @@ export function Reports() {
 
   const [selectedChatId, setSelectedChatId] = React.useState(null);
   const [showContactSidebar, setShowContactSidebar] = React.useState(false);
+  const [filterValue, setFilterValue] = React.useState(false);
 
   const [showInfo, setShowInfo] = React.useState(false);
   const queryClient = useQueryClient();
@@ -403,7 +411,12 @@ export function Reports() {
   const getListReporting = async () => {
     try {
       const { data } = await axios.get(
-        `https://api-rakhsa.inovatiftujuh8.com/api/v1/sos`
+        `https://api-rakhsa.inovatiftujuh8.com/api/v1/sos`,
+        {
+          params: {
+            is_confirm: filterValue,
+          },
+        }
       );
 
       setRows(data.data);
@@ -414,7 +427,7 @@ export function Reports() {
 
   React.useEffect(() => {
     getListReporting();
-  }, []);
+  }, [filterValue]);
 
   const join = (socket) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
@@ -560,6 +573,10 @@ export function Reports() {
     // setIsDialogOpen(true);
   };
 
+  const handleFilterChange = (value) => {
+    setFilterValue(value);
+  };
+
   return (
     <>
       {confirmSOSData.is_confirm ? (
@@ -647,8 +664,21 @@ export function Reports() {
         </div>
       ) : (
         <>
-          <div className="text-2xl font-medium text-default-800 ">
-            List Reporting
+          <div className="flex items-center justify-between">
+            <div className="flex-1 text-2xl font-medium text-default-800 ">
+              List Reporting
+            </div>
+            <div className="w-60">
+              <Select onValueChange={handleFilterChange} value={filterValue}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Filter" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={false}>Recently Reports</SelectItem>
+                  <SelectItem value={true}>History Reports</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
             {rows.length !== 0 ? (
