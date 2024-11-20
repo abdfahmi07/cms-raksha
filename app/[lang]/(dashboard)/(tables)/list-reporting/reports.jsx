@@ -84,6 +84,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
 
 const columns = [
   // {
@@ -193,7 +194,7 @@ export function Reports() {
 
   const [selectedChatId, setSelectedChatId] = React.useState(null);
   const [showContactSidebar, setShowContactSidebar] = React.useState(false);
-  const [filterValue, setFilterValue] = React.useState(false);
+  const [filterValue, setFilterValue] = React.useState("recent");
 
   const [showInfo, setShowInfo] = React.useState(false);
   const queryClient = useQueryClient();
@@ -212,6 +213,7 @@ export function Reports() {
   const [pinnedMessages, setPinnedMessages] = React.useState([]);
   // Forward State
   const [isForward, setIsForward] = React.useState(false);
+  const router = useRouter();
 
   const {
     isLoading,
@@ -414,7 +416,7 @@ export function Reports() {
         `https://api-rakhsa.inovatiftujuh8.com/api/v1/sos`,
         {
           params: {
-            is_confirm: filterValue,
+            is_confirm: filterValue === "recent" ? false : true,
           },
         }
       );
@@ -497,6 +499,7 @@ export function Reports() {
         const parsedData = JSON.parse(event.data);
 
         if (parsedData.type === "sos") {
+          setFilterValue("recent");
           setRows((prevRows) => [
             ...prevRows,
             {
@@ -507,7 +510,7 @@ export function Reports() {
               lng: parsedData.lng,
               country: parsedData.country,
               media: parsedData.media,
-              is_confirm: false,
+              is_confirm: parsedData.is_confirm,
               sender: {
                 id: "-",
                 name: parsedData.username,
@@ -674,8 +677,8 @@ export function Reports() {
                   <SelectValue placeholder="Filter" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={false}>Recently Reports</SelectItem>
-                  <SelectItem value={true}>History Reports</SelectItem>
+                  <SelectItem value="recent">Recently Reports</SelectItem>
+                  <SelectItem value="history">History Reports</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -716,8 +719,10 @@ export function Reports() {
                                 Location
                               </p>
                               <p className="text-sm">
-                                {row?.location?.length > 30 &&
-                                  `${row.location.substring(0, 30)}...`}
+                                {row.location
+                                  ? row?.location?.length > 30 &&
+                                    `${row.location.substring(0, 30)}...`
+                                  : "-"}
                               </p>
                             </div>
                             <div className="flex flex-col gap-y-2">
@@ -735,20 +740,44 @@ export function Reports() {
                                 }
                               >
                                 <Button
-                                  className="w-full exclude-element"
+                                  className="basis-6/12 w-full exclude-element"
                                   variant="outline"
                                 >
                                   Detail
                                 </Button>
                               </DialogTrigger>
 
-                              <Button
-                                className="flex-1 exclude-element"
-                                onClick={(event) => confirmSOS(event, row.id)}
-                                disabled={row.is_confirm}
-                              >
-                                {row.is_confirm ? "Confirmed" : "Confirm"}
-                              </Button>
+                              {row.is_confirm ? (
+                                <Link
+                                  className="basis-6/12 inline-block w-full"
+                                  href={{
+                                    pathname: "/list-reporting/chat",
+                                    query: {
+                                      id: row.chat_id,
+                                      sender: row.sender.id,
+                                    },
+                                  }}
+                                >
+                                  <Button
+                                    type="button"
+                                    className="w-full exclude-element"
+                                    // onClick={() =>
+                                    //   router.push(
+                                    //     "/list-reporting/chat?name=Udin"
+                                    //   )
+                                    // }
+                                  >
+                                    {"Show Chat"}
+                                  </Button>
+                                </Link>
+                              ) : (
+                                <Button
+                                  className="basis-6/12 exclude-element"
+                                  onClick={(event) => confirmSOS(event, row.id)}
+                                >
+                                  {"Confirm"}
+                                </Button>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -818,13 +847,34 @@ export function Reports() {
                           </Button>
                         </DialogClose>
 
-                        <Button
-                          type="submit"
-                          onClick={(event) => confirmSOS(event, detailSOS.id)}
-                          disabled={row.is_confirm}
-                        >
-                          {row.is_confirm ? "Confirmed" : "Confirm"}
-                        </Button>
+                        {detailSOS.is_confirm ? (
+                          <Link
+                            className=""
+                            href={{
+                              pathname: "/list-reporting/chat",
+                              query: {
+                                id: row.chat_id,
+                                sender: row.sender.id,
+                              },
+                            }}
+                          >
+                            <Button
+                              className="exclude-element"
+                              // onClick={(event) => confirmSOS(event, row.id)}
+                              // disabled={row.is_confirm}
+                            >
+                              {"Show Chat"}
+                            </Button>
+                          </Link>
+                        ) : (
+                          <Button
+                            className="exclude-element"
+                            onClick={(event) => confirmSOS(event, detailSOS.id)}
+                            // disabled={row.is_confirm}
+                          >
+                            {"Confirm"}
+                          </Button>
+                        )}
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>

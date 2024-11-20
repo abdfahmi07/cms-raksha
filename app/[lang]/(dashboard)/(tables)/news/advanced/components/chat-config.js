@@ -33,6 +33,31 @@ export const getMessages = async (data) => {
     throw error;
   }
 };
+
+export const getMessagesDefault = async (data) => {
+  try {
+    const { chatId, senderId } = data;
+    const response = await axios.post(
+      `https://api-rakhsa.inovatiftujuh8.com/api/v1/chat/messages`,
+      {
+        chat_id: chatId,
+        sender_id: user.user.id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+
+    console.log("Response from getMessages:", response.data);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    throw error;
+  }
+};
+
 export const deleteMessage = async (obj) => {
   console.log("Object to be sent:", obj); // Add this log statement
   try {

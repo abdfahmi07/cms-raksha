@@ -60,9 +60,10 @@ const Messages = ({
     };
     handlePinMessage(obj);
   };
+
   return (
     <>
-      <div className="block md:px-6 px-0 ">
+      <div className="block md:px-6 px-0">
         {user.is_me ? (
           <>
             {/* {replayMetadata === true && (
@@ -82,7 +83,7 @@ const Messages = ({
               </div>
             )} */}
             <div className="flex space-x-2 items-start justify-end group w-full rtl:space-x-reverse mb-4">
-              <div className=" flex flex-col  gap-1">
+              <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-1">
                   {/* <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible ">
                     <DropdownMenu>

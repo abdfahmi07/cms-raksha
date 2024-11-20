@@ -26,12 +26,14 @@ export function middleware(request) {
   if (pathnameIsMissingLocale) {
     const locale = getLocale(request);
 
+    const newUrl = new URL(`/${locale}${pathname}`, request.url);
+    newUrl.search = request.nextUrl.search; // Append the existing query parameters
     // e.g. incoming request is /products
     // The new URL is now /en-US/products
-    return NextResponse.redirect(
-      new URL(`/${locale}/${pathname}`, request.url)
-    );
+    return NextResponse.redirect(newUrl);
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
