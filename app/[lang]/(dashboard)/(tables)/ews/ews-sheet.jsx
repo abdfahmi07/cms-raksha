@@ -12,6 +12,7 @@ import { cn, formatDate } from "@/lib/utils";
 import { addProjectAction, editProjectAction } from "@/action/project-action";
 import { Button } from "@/components/ui/button";
 import { Plus, Calendar as CalendarIcon } from "lucide-react";
+
 import {
   Sheet,
   SheetClose,
@@ -45,7 +46,7 @@ const schema = z.object({
   description: z.string().min(1, { message: "Description is required" }),
 });
 
-const NewsSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
+const EWSSheet = ({ open, getListEWS, detailEWS, onClose, selectedId }) => {
   const [priority, setPriority] = React.useState(null);
   const [assign, setAssign] = React.useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -70,10 +71,10 @@ const NewsSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
     reset();
   };
 
-  const updateNews = async (payloads) => {
+  const updateEWS = async (payloads) => {
     try {
       await axios.put(
-        `https://api-rakhsa.inovatiftujuh8.com/api/v1/news/${detailNews.id}`,
+        `https://api-rakhsa.inovatiftujuh8.com/api/v1/news/${detailEWS.id}`,
         payloads
       );
     } catch (err) {
@@ -81,10 +82,10 @@ const NewsSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
     }
   };
 
-  const updateNewsImage = async (payloads) => {
+  const updateEWSImage = async (payloads) => {
     try {
       await axios.put(
-        `https://api-rakhsa.inovatiftujuh8.com/api/v1/news/update-image/${detailNews.id}`,
+        `https://api-rakhsa.inovatiftujuh8.com/api/v1/news/update-image/${detailEWS.id}`,
         payloads
       );
     } catch (err) {
@@ -104,30 +105,30 @@ const NewsSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
   };
 
   const onSubmit = (data) => {
-    const updatedNews = {
+    const updatedEWS = {
       title: data.title,
       description: data.description,
     };
 
-    const addedNews = {
+    const addedEWS = {
       title: data.title,
       description: data.description,
       img: file.path,
-      type: "news",
+      type: "ews",
     };
 
-    if (Object.keys(detailNews).length !== 0) {
+    if (Object.keys(detailEWS).length !== 0) {
       startTransition(async () => {
-        await updateNews(updatedNews);
-        await updateNewsImage({ img: file.path || detailNews.img });
+        await updateEWS(updatedEWS);
+        await updateEWSImage({ img: file.path || detailEWS.img });
         toast.success("Successfully Update");
-        getListNews();
+        getListEWS();
       });
     } else {
       startTransition(async () => {
-        await createEWS(addedNews);
+        await createEWS(addedEWS);
         toast.success("Successfully Added");
-        getListNews();
+        getListEWS();
       });
     }
 
@@ -137,9 +138,9 @@ const NewsSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
   };
 
   useEffect(() => {
-    setFile(detailNews?.img ? { preview: detailNews?.img } : null);
-    setValue("title", detailNews?.title || "");
-    setValue("description", detailNews?.desc || "");
+    setFile(detailEWS?.img ? { preview: detailEWS?.img } : null);
+    setValue("title", detailEWS?.title || "");
+    setValue("description", detailEWS?.desc || "");
   }, [open]);
 
   const uploadMedia = async (file) => {
@@ -180,7 +181,8 @@ const NewsSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
         >
           <SheetHeader className="px-0">
             <SheetTitle>
-              {Object.keys(detailNews).length !== 0 ? "Edit " : "Create"} News
+              {Object.keys(detailEWS).length !== 0 ? "Edit " : "Create"} Early
+              Warning System
             </SheetTitle>
           </SheetHeader>
           <ScrollArea className="h-[calc(100%-40px)]">
@@ -280,10 +282,10 @@ const NewsSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
                 </Button>
 
                 <Button type="submit" disabled={isPending} className="flex-1">
-                  {Object.keys(detailNews).length !== 0
+                  {Object.keys(detailEWS).length !== 0
                     ? "Update"
                     : "  Create  "}{" "}
-                  News
+                  Early Warning System
                 </Button>
               </div>
             </form>
@@ -294,4 +296,4 @@ const NewsSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
   );
 };
 
-export default NewsSheet;
+export default EWSSheet;

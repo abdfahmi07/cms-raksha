@@ -1,8 +1,8 @@
 "use client";
 
-import Reports from "./reports";
+import EWSList from "./ews-list";
 
-const ReportsPage = () => {
+const EWSPage = () => {
   return (
     <div className=" space-y-5">
       {/* <Card>
@@ -10,7 +10,7 @@ const ReportsPage = () => {
           <CardTitle>List Reporting</CardTitle>
         </CardHeader>
         <CardContent className="p-0"> */}
-      <Reports />
+      <EWSList />
       {/* </CardContent>
       </Card> */}
 
@@ -34,4 +34,4 @@ const ReportsPage = () => {
   );
 };
 
-export default ReportsPage;
+export default EWSPage;

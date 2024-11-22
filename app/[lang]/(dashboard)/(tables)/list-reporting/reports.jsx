@@ -33,7 +33,7 @@ import {
 import { toast } from "react-hot-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { data } from "../news/data";
+import { data } from "../ews/data";
 import { Icon } from "@iconify/react";
 import { cn } from "@/lib/utils";
 import axios from "axios";
@@ -55,26 +55,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import MessageHeader from "../news/advanced/components/message-header";
-import SearchMessages from "../news/advanced/components/contact-info/search-messages";
-// import MyProfileHeader from "./my-profile-header";
-import EmptyMessage from "../news/advanced/components/empty-message";
-import Messages from "../news/advanced/components/messages";
-import Loader from "../news/advanced/components/loader";
+import MessageHeader from "../ews/advanced/components/message-header";
+import SearchMessages from "../ews/advanced/components/contact-info/search-messages";
+import EmptyMessage from "../ews/advanced/components/empty-message";
+import Messages from "../ews/advanced/components/messages";
+import Loader from "../ews/advanced/components/loader";
 import { isObjectNotEmpty } from "@/lib/utils";
-import PinnedMessages from "../news/advanced/components/pin-messages";
-// import ForwardMessage from "./forward-message";
-import ContactInfo from "../news/advanced/components/contact-info";
+import PinnedMessages from "../ews/advanced/components/pin-messages";
+import ContactInfo from "../ews/advanced/components/contact-info";
 import { useMediaQuery } from "@/hooks/use-media-query";
-// import { cn } from "@/lib/utils";
 import {
   getContacts,
   getMessages,
   getProfile,
   sendMessage,
   deleteMessage,
-} from "../news/advanced/components/chat-config";
-import MessageFooter from "../news/advanced/components/message-footer";
+} from "../ews/advanced/components/chat-config";
+import MessageFooter from "../ews/advanced/components/message-footer";
 import Player from "next-video/player";
 import socketIO from "socket.io-client";
 import {

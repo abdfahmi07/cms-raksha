@@ -1,8 +1,42 @@
 "use client";
 import * as React from "react";
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react";
+import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import Player from "next-video/player";
 import { toast } from "react-hot-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { data } from "../list-reporting/data";
+import { Icon } from "@iconify/react";
+import { cn } from "@/lib/utils";
 import axios from "axios";
 import {
   Card,
@@ -22,25 +56,30 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import NewsSheet from "./news-sheet";
+import EWSSheet from "./ews-sheet";
 
-export function NewsList() {
+export function EWSList() {
   const [sorting, setSorting] = React.useState([]);
   const [rows, setRows] = React.useState([]);
-  const [detailNews, setDetailNews] = React.useState({});
+  const [columnFilters, setColumnFilters] = React.useState([]);
+  const [columnVisibility, setColumnVisibility] = React.useState({});
+  const [rowSelection, setRowSelection] = React.useState({});
+  const [socket, setSocket] = React.useState(null);
+  const [confirmSOSData, setConfirmSOSData] = React.useState({});
+  const [detailEWS, setDetailEWS] = React.useState({});
   const user = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user"))
     : null;
 
   const [isOpenSheet, setIsOpenSheet] = React.useState(false);
 
-  const getListNews = async () => {
+  const getListEWS = async () => {
     try {
       const { data } = await axios.get(
         `https://api-rakhsa.inovatiftujuh8.com/api/v1/news`,
         {
           params: {
-            type: "news",
+            type: "ews",
           },
         }
       );
@@ -52,38 +91,38 @@ export function NewsList() {
   };
 
   React.useEffect(() => {
-    getListNews();
+    getListEWS();
   }, []);
 
-  const getDetailNews = async (newsId) => {
+  const getDetailEWS = async (newsId) => {
     try {
       const { data } = await axios.get(
         `https://api-rakhsa.inovatiftujuh8.com/api/v1/news/${newsId}`
       );
 
-      setDetailNews(data.data);
+      setDetailEWS(data.data);
     } catch (err) {
       toast.error(err.response.message || "Something Went Wrong");
     }
   };
 
   const handleDialogTriggerClick = (event, newsId) => {
-    getDetailNews(newsId);
+    getDetailEWS(newsId);
     // setIsDialogOpen(true);
   };
 
   const addEWSModal = () => {
     // setSelectedProject(null);
     // setSelectedProjectId(null);
-    setDetailNews({});
+    setDetailEWS({});
     setIsOpenSheet(true);
     // wait().then(() => (document.body.style.pointerEvents = "auto"));
   };
 
-  const updateNewsModal = async (ewsId) => {
+  const updateEWSModal = async (ewsId) => {
     // setSelectedProject(null);
     // setSelectedProjectId(null);
-    await getDetailNews(ewsId);
+    await getDetailEWS(ewsId);
     setIsOpenSheet(true);
     // wait().then(() => (document.body.style.pointerEvents = "auto"));
   };
@@ -95,13 +134,13 @@ export function NewsList() {
     // wait().then(() => (document.body.style.pointerEvents = "auto"));
   };
 
-  const deleteNews = async (newsId) => {
+  const deleteEWS = async (newsId) => {
     try {
       await axios.delete(
         `https://api-rakhsa.inovatiftujuh8.com/api/v1/news/${newsId}`
       );
 
-      getListNews();
+      getListEWS();
     } catch (err) {
       toast.error(err.response.message || "Something Went Wrong");
     }
@@ -110,10 +149,12 @@ export function NewsList() {
   return (
     <>
       <div className="flex justify-between">
-        <div className="text-2xl font-medium text-default-800">News</div>
+        <div className="text-2xl font-medium text-default-800">
+          Early Warning System
+        </div>
         <Button onClick={addEWSModal} className="whitespace-nowrap">
           <Plus className="w-4 h-4  ltr:mr-2 rtl:ml-2 " />
-          Add News
+          Add Early Warning System
         </Button>
       </div>
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
@@ -161,14 +202,14 @@ export function NewsList() {
                           <Button
                             className="w-full exclude-element"
                             variant="outline"
-                            onClick={() => updateNewsModal(row.id)}
+                            onClick={() => updateEWSModal(row.id)}
                           >
                             Update
                           </Button>
                           {/* </Link> */}
                           <Button
                             className="flex-1 exclude-element"
-                            onClick={() => deleteNews(row.id)}
+                            onClick={() => deleteEWS(row.id)}
                           >
                             Delete
                           </Button>
@@ -180,14 +221,14 @@ export function NewsList() {
                 <DialogContent size="4xl">
                   <DialogHeader>
                     <DialogTitle className="text-base font-medium ">
-                      Detail News
+                      Detail Early Warning System
                     </DialogTitle>
                   </DialogHeader>
 
-                  <div className="flex gap-x-12 mt-2 text-sm text-default-500 space-y-4">
+                  <div className="flex gap-x-8 mt-2 text-sm text-default-500 space-y-4">
                     <Image
-                      className="w-56 object-cover"
-                      src={detailNews.img}
+                      className="w-96 object-cover"
+                      src={detailEWS.img}
                       alt="image"
                       width={500}
                       height={500}
@@ -196,15 +237,15 @@ export function NewsList() {
                       <div className="flex flex-col gap-y-2">
                         <p className="text-muted-foreground text-sm">Title</p>
                         <p className="text-sm text-default-900 capitalize">
-                          {detailNews.title}
+                          {detailEWS.title}
                         </p>
                       </div>
                       <div className="flex flex-col gap-y-2">
                         <p className="text-muted-foreground text-sm">
                           Description
                         </p>
-                        <p className="text-sm text-blue-700 capitalize">
-                          {detailNews.desc}
+                        <p className="text-sm text-default-900 capitalize">
+                          {detailEWS.desc}
                         </p>
                       </div>
                     </div>
@@ -222,16 +263,16 @@ export function NewsList() {
           })
         ) : (
           <div className=" font-medium text-default-500">
-            I'm Sorry, News Not Found
+            I'm Sorry, Early Warning System Not Found
           </div>
         )}
       </div>
 
-      <NewsSheet
+      <EWSSheet
         open={isOpenSheet}
         onClose={closeModal}
-        getListNews={getListNews}
-        detailNews={detailNews}
+        getListEWS={getListEWS}
+        detailEWS={detailEWS}
         // project={selectedNews}
         // selectedId={selectedProjectId}
       />
@@ -239,4 +280,4 @@ export function NewsList() {
   );
 }
 
-export default NewsList;
+export default EWSList;

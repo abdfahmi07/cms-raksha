@@ -1036,9 +1036,14 @@ export const menusConfig = {
             icon: ClipBoard2,
           },
           {
+            title: "Early Warning System",
+            href: "/ews",
+            icon: Flag,
+          },
+          {
             title: "News",
             href: "/news",
-            icon: Flag,
+            icon: Files,
           },
           // {
           //   title: "Project ",
