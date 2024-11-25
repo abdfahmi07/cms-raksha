@@ -42,6 +42,7 @@ export const getMessagesDefault = async (data) => {
       {
         chat_id: chatId,
         sender_id: user.user.id,
+        is_agent: true,
       },
       {
         headers: {

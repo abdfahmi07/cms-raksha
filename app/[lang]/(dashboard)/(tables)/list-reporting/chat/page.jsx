@@ -409,14 +409,14 @@ export function ChatPage() {
                   />
                 </div>
               </CardContent>
-              <CardFooter className="flex-none flex-col px-0 py-4 border-t border-border">
+              {/* <CardFooter className="flex-none flex-col px-0 py-4 border-t border-border">
                 <MessageFooter
                   handleSendMessage={handleSendMessage}
                   replay={replay}
                   setReply={setReply}
                   replayData={replayData}
                 />
-              </CardFooter>
+              </CardFooter> */}
             </Card>
           </div>
 

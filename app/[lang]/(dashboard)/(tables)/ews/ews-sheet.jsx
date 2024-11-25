@@ -38,6 +38,18 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import axios from "axios";
+import BasicMap from "./basic-map";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import "./style/custom.css";
+import CustomMap from "./custom-map";
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -50,11 +62,11 @@ const EWSSheet = ({ open, getListEWS, detailEWS, onClose, selectedId }) => {
   const [priority, setPriority] = React.useState(null);
   const [assign, setAssign] = React.useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
-
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [isPending, startTransition] = useTransition();
   const [file, setFile] = useState(null);
+  const [markerPosition, setMarkerPosition] = useState({});
 
   const {
     register,
@@ -108,6 +120,8 @@ const EWSSheet = ({ open, getListEWS, detailEWS, onClose, selectedId }) => {
     const updatedEWS = {
       title: data.title,
       description: data.description,
+      lat: markerPosition.lat,
+      lng: markerPosition.lng,
     };
 
     const addedEWS = {
@@ -115,6 +129,8 @@ const EWSSheet = ({ open, getListEWS, detailEWS, onClose, selectedId }) => {
       description: data.description,
       img: file.path,
       type: "ews",
+      lat: markerPosition.lat,
+      lng: markerPosition.lng,
     };
 
     if (Object.keys(detailEWS).length !== 0) {
@@ -169,6 +185,8 @@ const EWSSheet = ({ open, getListEWS, detailEWS, onClose, selectedId }) => {
     });
   };
 
+  // console.log(detailEWS);
+
   return (
     <>
       <Sheet open={open}>
@@ -187,7 +205,7 @@ const EWSSheet = ({ open, getListEWS, detailEWS, onClose, selectedId }) => {
           </SheetHeader>
           <ScrollArea className="h-[calc(100%-40px)]">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="space-y-4  mt-6">
+              <div className="space-y-4 mt-6">
                 <div className="flex flex-col gap-4">
                   <Label htmlFor="thumbnail" className="mb-1.5">
                     Thumbnail
@@ -265,8 +283,53 @@ const EWSSheet = ({ open, getListEWS, detailEWS, onClose, selectedId }) => {
                     {errors.description.message}
                   </div>
                 )}
+                <div className="">
+                  <Label htmlFor="location" className="mb-1.5">
+                    Location
+                  </Label>
+                  <div>
+                    <CustomMap
+                      handleMarkerPosition={setMarkerPosition}
+                      markerPosition={markerPosition}
+                      detailEWS={detailEWS}
+                    />
+                    {/* <BasicMap
+                      handleMarkerPosition={setMarkerPosition}
+                      markerPosition={markerPosition}
+                      map={map}
+                      handleSetMap={setMap}
+                    /> */}
+                    {/* <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          color="transparent"
+                          className="text-primary p-0"
+                        >
+                          Open map for location
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent size="xl">
+                        <DialogHeader>
+                          <DialogTitle className="text-base font-medium text-default-700 ">
+                            Search location on map
+                          </DialogTitle>
+                        </DialogHeader>
+                        <div className="text-sm text-default-500">
+                          <BasicMap />
+                        </div>
+                        <DialogFooter className="mt-8">
+                          <DialogClose asChild>
+                            <Button variant="outline" color="warning">
+                              Close
+                            </Button>
+                          </DialogClose>
+                          <Button>Save</Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog> */}
+                  </div>
+                </div>
               </div>
-
               <div className="mt-12 flex gap-6">
                 <Button
                   type="button"

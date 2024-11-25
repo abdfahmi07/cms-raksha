@@ -19,6 +19,7 @@ const MessageHeader = ({
   handleShowInfo,
   profile,
   mblChatHandler,
+  offerToEndChatSession,
 }) => {
   let active = true;
   const isLg = useMediaQuery("(max-width: 1024px)");
@@ -51,37 +52,15 @@ const MessageHeader = ({
           </span>
         </div>
       </div>
-      {/* <div className="flex-none space-x-2 rtl:space-x-reverse">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                type="button"
-                size="icon"
-                className={cn(
-                  "bg-transparent hover:bg-default-50 rounded-full",
-                  {
-                    "text-primary": !showInfo,
-                  }
-                )}
-                onClick={handleShowInfo}
-              >
-                <span className="text-xl text-primary ">
-                  {showInfo ? (
-                    <Icon icon="material-symbols:info" />
-                  ) : (
-                    <Icon icon="material-symbols:info-outline" />
-                  )}
-                </span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" align="end">
-              <p>Conversation information</p>
-              <TooltipArrow className="fill-primary" />
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div> */}
+      <div className="flex-none space-x-2 rtl:space-x-reverse">
+        <Button
+          className="text-sm"
+          type="button"
+          onClick={offerToEndChatSession}
+        >
+          Offer to End the Session
+        </Button>
+      </div>
     </div>
   );
 };

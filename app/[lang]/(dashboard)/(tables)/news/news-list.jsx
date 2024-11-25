@@ -149,7 +149,13 @@ export function NewsList() {
                           <p className="text-muted-foreground text-sm">
                             Description
                           </p>
-                          <p className="text-sm capitalize">{row.desc}</p>
+                          <p className="text-sm capitalize">
+                            {row.desc
+                              ? row?.desc?.length > 100
+                                ? `${row.desc.substring(0, 100)}...`
+                                : row.desc
+                              : "-"}
+                          </p>
                         </div>
 
                         <div className="flex gap-x-3 mt-2">
@@ -203,7 +209,7 @@ export function NewsList() {
                         <p className="text-muted-foreground text-sm">
                           Description
                         </p>
-                        <p className="text-sm text-blue-700 capitalize">
+                        <p className="text-sm text-default-900 capitalize">
                           {detailNews.desc}
                         </p>
                       </div>

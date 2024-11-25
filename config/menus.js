@@ -1045,6 +1045,11 @@ export const menusConfig = {
             href: "/news",
             icon: Files,
           },
+          {
+            title: "Itineraries",
+            href: "/itineraries",
+            icon: Calendar,
+          },
           // {
           //   title: "Project ",
           //   href: "/project",

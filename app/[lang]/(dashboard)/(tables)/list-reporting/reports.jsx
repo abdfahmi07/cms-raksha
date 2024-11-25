@@ -182,7 +182,7 @@ export function Reports() {
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
   const [socket, setSocket] = React.useState(null);
-  // const socket = React.useRef(null);
+
   const [confirmSOSData, setConfirmSOSData] = React.useState({});
   const [detailSOS, setDetailSOS] = React.useState({});
   const user = localStorage.getItem("user")
@@ -195,20 +195,17 @@ export function Reports() {
 
   const [showInfo, setShowInfo] = React.useState(false);
   const queryClient = useQueryClient();
-  // Memoize getMessages using useCallback
+
   const getMessagesCallback = React.useCallback(
     (confirmSOSData) => getMessages(confirmSOSData),
     []
   );
-  // reply state
   const [replay, setReply] = React.useState(false);
   const [replayData, setReplyData] = React.useState({});
 
-  // search state
   const [isOpenSearch, setIsOpenSearch] = React.useState(false);
 
   const [pinnedMessages, setPinnedMessages] = React.useState([]);
-  // Forward State
   const [isForward, setIsForward] = React.useState(false);
   const router = useRouter();
 
@@ -257,6 +254,17 @@ export function Reports() {
           sender: user.user.id,
           recipient: confirmSOSData.sender_id,
           text: message,
+        })
+      );
+    }
+  };
+
+  const offerToEndChatSession = () => {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(
+        JSON.stringify({
+          type: "finish-sos",
+          sos_id: confirmSOSData.id,
         })
       );
     }
@@ -592,6 +600,7 @@ export function Reports() {
                     mblChatHandler={() =>
                       setShowContactSidebar(!showContactSidebar)
                     }
+                    offerToEndChatSession={offerToEndChatSession}
                   />
                 </CardHeader>
                 {isOpenSearch && (
@@ -666,7 +675,9 @@ export function Reports() {
         <>
           <div className="flex items-center justify-between">
             <div className="flex-1 text-2xl font-medium text-default-800 ">
-              List Reporting
+              {filterValue === "recent"
+                ? "Recently Reports"
+                : "History Reports"}
             </div>
             <div className="w-60">
               <Select onValueChange={handleFilterChange} value={filterValue}>
@@ -707,6 +718,17 @@ export function Reports() {
                           <div className="flex flex-col gap-y-3">
                             <div className="flex flex-col gap-y-2">
                               <p className="text-muted-foreground text-sm">
+                                Status
+                              </p>
+                              <Badge
+                                color={row.is_confirm ? "success" : "warning"}
+                                className="w-fit"
+                              >
+                                {row.is_confirm ? "Confirmed" : "Unconfirmed"}
+                              </Badge>
+                            </div>
+                            <div className="flex flex-col gap-y-2">
+                              <p className="text-muted-foreground text-sm">
                                 Name
                               </p>
                               <p className="text-sm">{row?.sender?.name}</p>
@@ -717,8 +739,9 @@ export function Reports() {
                               </p>
                               <p className="text-sm">
                                 {row.location
-                                  ? row?.location?.length > 30 &&
-                                    `${row.location.substring(0, 30)}...`
+                                  ? row?.location?.length > 30
+                                    ? `${row.location.substring(0, 30)}...`
+                                    : row.location
                                   : "-"}
                               </p>
                             </div>
@@ -802,7 +825,7 @@ export function Reports() {
                             style={{ width: "30rem", height: "20rem" }}
                           />
                         )}
-                        <div className="flex flex-col gap-y-3">
+                        <div className="flex flex-col gap-y-4">
                           <div className="flex flex-col gap-y-2">
                             <p className="text-muted-foreground text-sm">
                               Name
@@ -830,6 +853,17 @@ export function Reports() {
                               Time
                             </p>
                             <p className="text-sm text-default-900">{`${detailSOS.time} WIB`}</p>
+                          </div>
+                          <div className="flex flex-col gap-y-2">
+                            <p className="text-muted-foreground text-sm">
+                              Status
+                            </p>
+                            <Badge
+                              color={row.is_confirm ? "success" : "warning"}
+                              className="w-fit"
+                            >
+                              {row.is_confirm ? "Confirmed" : "Unconfirmed"}
+                            </Badge>
                           </div>
                         </div>
                       </div>
