@@ -198,7 +198,6 @@ export function EWSList() {
                               : "-"}
                           </p>
                         </div>
-
                         <div className="flex gap-x-3 mt-2">
                           {/* <Link
                             className="flex-1 block"
@@ -254,6 +253,22 @@ export function EWSList() {
                           {detailEWS.desc}
                         </p>
                       </div>
+                      {detailEWS.lat !== "-" && detailEWS.lng !== "-" && (
+                        <div className="flex">
+                          <Link
+                            className=""
+                            href={`https://www.google.com/maps/search/?api=1&query=${detailEWS.lat}%2C${detailEWS.lng}`}
+                            target="_blank"
+                          >
+                            <Button
+                              color="transparent"
+                              className="text-primary p-0"
+                            >
+                              Lihat Lokasi
+                            </Button>
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <DialogFooter className="mt-8 gap-2">

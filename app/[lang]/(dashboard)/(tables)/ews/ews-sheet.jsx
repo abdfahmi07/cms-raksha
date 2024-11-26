@@ -120,8 +120,8 @@ const EWSSheet = ({ open, getListEWS, detailEWS, onClose, selectedId }) => {
     const updatedEWS = {
       title: data.title,
       description: data.description,
-      lat: markerPosition.lat,
-      lng: markerPosition.lng,
+      lat: markerPosition.lat.toString(),
+      lng: markerPosition.lng.toString(),
     };
 
     const addedEWS = {
@@ -129,8 +129,8 @@ const EWSSheet = ({ open, getListEWS, detailEWS, onClose, selectedId }) => {
       description: data.description,
       img: file.path,
       type: "ews",
-      lat: markerPosition.lat,
-      lng: markerPosition.lng,
+      lat: markerPosition.lat.toString(),
+      lng: markerPosition.lng.toString(),
     };
 
     if (Object.keys(detailEWS).length !== 0) {
@@ -264,7 +264,7 @@ const EWSSheet = ({ open, getListEWS, detailEWS, onClose, selectedId }) => {
                   />
                 </div>
                 {errors.title && (
-                  <div className=" text-destructive mt-2">
+                  <div className="text-destructive mt-2">
                     {errors.title.message}
                   </div>
                 )}

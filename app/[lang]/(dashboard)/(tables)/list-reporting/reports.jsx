@@ -691,7 +691,13 @@ export function Reports() {
               </Select>
             </div>
           </div>
-          <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
+          <div
+            className={`grid ${
+              filterValue === "recent"
+                ? "xl:grid-cols-3 md:grid-cols-2 grid-cols-1"
+                : "xl:grid-cols-4 md:grid-cols-3 grid-cols-2"
+            }  gap-3`}
+          >
             {rows.length !== 0 ? (
               rows.map((row) => {
                 return (
@@ -727,30 +733,34 @@ export function Reports() {
                                 {row.is_confirm ? "Confirmed" : "Unconfirmed"}
                               </Badge>
                             </div>
-                            <div className="flex flex-col gap-y-2">
-                              <p className="text-muted-foreground text-sm">
-                                Name
-                              </p>
-                              <p className="text-sm">{row?.sender?.name}</p>
-                            </div>
-                            <div className="flex flex-col gap-y-2">
-                              <p className="text-muted-foreground text-sm">
-                                Location
-                              </p>
-                              <p className="text-sm">
-                                {row.location
-                                  ? row?.location?.length > 30
-                                    ? `${row.location.substring(0, 30)}...`
-                                    : row.location
-                                  : "-"}
-                              </p>
-                            </div>
-                            <div className="flex flex-col gap-y-2">
-                              <p className="text-muted-foreground text-sm">
-                                Time
-                              </p>
-                              <p className="text-sm">{`${row.time} WIB`}</p>
-                            </div>
+                            {filterValue === "recent" && (
+                              <>
+                                <div className="flex flex-col gap-y-2">
+                                  <p className="text-muted-foreground text-sm">
+                                    Name
+                                  </p>
+                                  <p className="text-sm">{row?.sender?.name}</p>
+                                </div>
+                                <div className="flex flex-col gap-y-2">
+                                  <p className="text-muted-foreground text-sm">
+                                    Location
+                                  </p>
+                                  <p className="text-sm">
+                                    {row.location
+                                      ? row?.location?.length > 30
+                                        ? `${row.location.substring(0, 30)}...`
+                                        : row.location
+                                      : "-"}
+                                  </p>
+                                </div>
+                                <div className="flex flex-col gap-y-2">
+                                  <p className="text-muted-foreground text-sm">
+                                    Time
+                                  </p>
+                                  <p className="text-sm">{`${row.time} WIB`}</p>
+                                </div>
+                              </>
+                            )}
                             <div className="flex gap-x-3 mt-2">
                               <DialogTrigger
                                 className="flex-1"

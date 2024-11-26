@@ -41,6 +41,7 @@ import {
   LucideIcon,
   CustomIcon,
   Mail,
+  User,
 } from "@/components/svg";
 
 export const menusConfig = {
@@ -1049,6 +1050,16 @@ export const menusConfig = {
             title: "Itineraries",
             href: "/itineraries",
             icon: Calendar,
+          },
+          {
+            title: "Users",
+            href: "/users",
+            icon: User,
+          },
+          {
+            title: "Marketplace",
+            href: "/marketplace",
+            icon: Cart,
           },
           // {
           //   title: "Project ",
