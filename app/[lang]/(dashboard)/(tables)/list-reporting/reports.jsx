@@ -430,6 +430,7 @@ export function Reports() {
                 : filterValue === "on_process"
                 ? "process"
                 : "confirmed",
+            platform_type: "raksha",
           },
         }
       );
@@ -533,7 +534,11 @@ export function Reports() {
       ws.current.onmessage = (event) => {
         const parsedData = JSON.parse(event.data);
 
-        if (parsedData.type === "sos") {
+        console.log(parsedData);
+        if (
+          parsedData.type === "sos" &&
+          parsedData.platform_type === "raksha"
+        ) {
           setFilterValue("recent");
           setRows((prevRows) => [
             ...prevRows,
@@ -921,10 +926,20 @@ export function Reports() {
                       <div className="flex flex-col gap-y-2">
                         <p className="text-muted-foreground text-sm">Status</p>
                         <Badge
-                          color={row.is_confirm ? "success" : "warning"}
+                          color={
+                            row.is_confirm && row.is_finish
+                              ? "success"
+                              : row.is_confirm && !row.is_finish
+                              ? "info"
+                              : "warning"
+                          }
                           className="w-fit"
                         >
-                          {row.is_confirm ? "Confirmed" : "Unconfirmed"}
+                          {row.is_confirm && row.is_finish
+                            ? "Finished"
+                            : row.is_confirm && !row.is_finish
+                            ? "On Process"
+                            : "Waiting Confirm"}
                         </Badge>
                       </div>
                     </div>
@@ -936,7 +951,7 @@ export function Reports() {
                       </Button>
                     </DialogClose>
 
-                    {detailSOS.is_confirm ? (
+                    {detailSOS.is_confirm && detailSOS.is_finish ? (
                       <Link
                         className=""
                         href={{
@@ -946,6 +961,19 @@ export function Reports() {
                             sender: row.sender.id,
                           },
                         }}
+                      >
+                        <Button
+                          className="exclude-element"
+                          // onClick={(event) => confirmSOS(event, row.id)}
+                          // disabled={row.is_confirm}
+                        >
+                          {"Show Chat"}
+                        </Button>
+                      </Link>
+                    ) : detailSOS.is_confirm && !detailSOS.is_finish ? (
+                      <Link
+                        className=""
+                        href={`/list-reporting/chat?id=${detailSOS.chat_id}&sos=${detailSOS.id}&sender=${detailSOS.sender.id}`}
                       >
                         <Button
                           className="exclude-element"
@@ -971,7 +999,7 @@ export function Reports() {
           })
         ) : (
           <div className=" font-medium text-default-500">
-            I'm Sorry, Report Not Found
+            I'm Sorry, Reports Not Found
           </div>
         )}
       </div>
