@@ -225,7 +225,7 @@ export function EWSList() {
                 </Card>
                 <DialogContent size="4xl">
                   <DialogHeader>
-                    <DialogTitle className="text-base font-medium ">
+                    <DialogTitle className="text-base font-medium">
                       Detail Early Warning System
                     </DialogTitle>
                   </DialogHeader>
