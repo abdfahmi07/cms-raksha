@@ -1028,7 +1028,7 @@ export const menusConfig = {
       //   ],
       // },
       {
-        title: "Monitoring",
+        title: "Main Menu",
         icon: PretentionChartLine2,
         child: [
           {
