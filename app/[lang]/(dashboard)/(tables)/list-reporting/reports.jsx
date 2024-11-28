@@ -426,7 +426,11 @@ export function Reports() {
         }
       );
 
-      setRows(data.data);
+      if (filterValue === "recent") {
+        setRows(data.data);
+      } else {
+        setRows(data.data.slice().reverse());
+      }
     } catch (err) {
       toast.error(err.response.message || "Something Went Wrong");
     }
