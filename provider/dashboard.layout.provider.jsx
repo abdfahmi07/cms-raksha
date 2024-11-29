@@ -20,6 +20,80 @@ const DashBoardLayoutProvider = ({ children, trans }) => {
   const location = usePathname();
   const isMobile = useMediaQuery("(min-width: 768px)");
   const mounted = useMounted();
+
+  const ws = React.useRef(null);
+  const pingInterval = React.useRef(null);
+  const user = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
+    : null;
+
+  const join = () => {
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      ws.current.send(
+        JSON.stringify({
+          type: "join",
+          user_id: user.user.id,
+        })
+      );
+    }
+  };
+
+  const startPing = () => {
+    pingInterval.current = setInterval(() => {
+      if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+        ws.current.send(
+          JSON.stringify({
+            type: "ping",
+          })
+        );
+        console.log("Sent: ping");
+      }
+    }, 5000);
+  };
+
+  // Clear the ping timer
+  const stopPing = () => {
+    if (pingInterval.current) {
+      clearInterval(pingInterval.current);
+      pingInterval.current = null;
+    }
+  };
+
+  React.useEffect(() => {
+    const connectWs = () => {
+      ws.current = new WebSocket("wss://websockets-rakhsa.inovatiftujuh8.com");
+
+      ws.current.onopen = () => {
+        console.log("Connected to WebSocket");
+        // setSocket(ws);
+        join();
+        startPing();
+      };
+
+      ws.current.onmessage = (event) => {
+        const parsedData = JSON.parse(event.data);
+        console.log(parsedData);
+      };
+
+      ws.current.onclose = () => {
+        console.log("WebSocket connection closed");
+        stopPing();
+      };
+
+      ws.current.onerror = (error) => {
+        console.error("WebSocket error:", error);
+        // ws.current.close();
+      };
+    };
+
+    connectWs();
+
+    return () => {
+      stopPing();
+      ws.current?.close();
+    };
+  }, []);
+
   if (!mounted) {
     return <LayoutLoader />;
   }
