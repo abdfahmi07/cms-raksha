@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import axios from "axios";
+import validator from "validator";
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -45,17 +46,25 @@ const schema = z.object({
     .string()
     .min(1, { message: "Email is required" })
     .email("Invalid email format"),
-  title: z.string().min(1, { message: "Title is required" }),
-  description: z.string().min(1, { message: "Description is required" }),
+  phone: z.string().refine((phone) => validator.isMobilePhone(phone, "id-ID"), {
+    message: "Invalid phone number format",
+  }),
+  fullname: z.string().min(1, { message: "Fullname is required" }),
+  username: z.string().min(1, { message: "Username is required" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+  address: z.string().min(1, { message: "Address is required" }),
+  passport: z.string().min(1, { message: "Passport is required" }),
 });
 
 const UsersSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
-  const [priority, setPriority] = React.useState(null);
-  const [assign, setAssign] = React.useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
+  // const [priority, setPriority] = React.useState(null);
+  // const [assign, setAssign] = React.useState([]);
+  // const [selectedFile, setSelectedFile] = useState(null);
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  // const [startDate, setStartDate] = useState(new Date());
+  // const [endDate, setEndDate] = useState(new Date());
   const [isPending, startTransition] = useTransition();
   const [file, setFile] = useState(null);
 
@@ -99,7 +108,7 @@ const UsersSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
   const createEWS = async (payloads) => {
     try {
       await axios.post(
-        `https://api-rakhsa.inovatiftujuh8.com/api/v1/news`,
+        `https://api-rakhsa.inovatiftujuh8.com/api/v1/admin/create-user`,
         payloads
       );
     } catch (err) {
@@ -188,7 +197,7 @@ const UsersSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
         >
           <SheetHeader className="px-0">
             <SheetTitle>
-              {Object.keys(detailNews).length !== 0 ? "Edit " : "Create"} News
+              {Object.keys(detailNews).length !== 0 ? "Edit " : "Create"} User
             </SheetTitle>
           </SheetHeader>
           <ScrollArea className="h-[calc(100%-40px)]">
@@ -196,7 +205,7 @@ const UsersSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
               <div className="space-y-4  mt-6">
                 <div className="flex flex-col gap-4">
                   <Label htmlFor="thumbnail" className="mb-1.5">
-                    Thumbnail
+                    Avatar
                   </Label>
 
                   {file ? (
@@ -243,22 +252,22 @@ const UsersSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
 
                 <div>
                   <Label htmlFor="title" className="mb-1.5">
-                    Title
+                    Fullname
                   </Label>
                   <Input
                     type="text"
-                    {...register("title")}
-                    placeholder="Title"
+                    {...register("fullname")}
+                    placeholder="Fullname"
                   />
                 </div>
-                {errors.title && (
-                  <div className=" text-destructive mt-2">
-                    {errors.title.message}
+                {errors.fullname && (
+                  <div className="text-destructive mt-2">
+                    {errors.fullname.message}
                   </div>
                 )}
                 <div>
                   <Label htmlFor="description" className="mb-1.5">
-                    Description
+                    Username
                   </Label>
                   <Textarea
                     id="description"

@@ -21,10 +21,10 @@ const UsersPage = () => {
     <div className="space-y-5">
       <div className="flex justify-between">
         <div className="text-2xl font-medium text-default-800">Users</div>
-        <Button onClick={addUserModal} className="whitespace-nowrap">
+        {/* <Button onClick={addUserModal} className="whitespace-nowrap">
           <Plus className="w-4 h-4  ltr:mr-2 rtl:ml-2 " />
           Add User
-        </Button>
+        </Button> */}
       </div>
       <Card>
         {/* <CardHeader>
