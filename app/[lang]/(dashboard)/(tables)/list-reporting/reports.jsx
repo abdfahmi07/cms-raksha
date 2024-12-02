@@ -541,7 +541,6 @@ export function Reports() {
         ) {
           setFilterValue("recent");
           setRows((prevRows) => [
-            ...prevRows,
             {
               id: parsedData.id,
               location: parsedData.location,
@@ -566,6 +565,7 @@ export function Reports() {
                 },
               },
             },
+            ...prevRows,
           ]);
         }
 
