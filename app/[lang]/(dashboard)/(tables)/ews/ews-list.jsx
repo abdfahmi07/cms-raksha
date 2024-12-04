@@ -73,13 +73,15 @@ export function EWSList() {
 
   const [isOpenSheet, setIsOpenSheet] = React.useState(false);
 
-  const getListEWS = async () => {
+  const getListEWS = async (latLng) => {
     try {
       const { data } = await axios.get(
         `https://api-rakhsa.inovatiftujuh8.com/api/v1/news`,
         {
           params: {
             type: "ews",
+            lat: latLng.lat,
+            lng: latLng.lng,
           },
         }
       );
@@ -90,8 +92,26 @@ export function EWSList() {
     }
   };
 
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const latLng = { lat: latitude, lng: longitude };
+
+          getListEWS(latLng);
+        },
+        () => {
+          console.error("Error fetching location.");
+        }
+      );
+    } else {
+      console.error("Geolocation not supported by this browser.");
+    }
+  };
+
   React.useEffect(() => {
-    getListEWS();
+    getCurrentLocation();
   }, []);
 
   const getDetailEWS = async (newsId) => {

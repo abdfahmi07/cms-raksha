@@ -534,7 +534,6 @@ export function Reports() {
       ws.current.onmessage = (event) => {
         const parsedData = JSON.parse(event.data);
 
-        console.log(parsedData);
         if (
           parsedData.type === "sos" &&
           parsedData.platform_type === "raksha"
