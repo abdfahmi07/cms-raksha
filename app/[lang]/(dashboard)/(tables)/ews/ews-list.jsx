@@ -80,8 +80,9 @@ export function EWSList() {
         {
           params: {
             type: "ews",
-            lat: latLng.lat,
-            lng: latLng.lng,
+            lat: "-",
+            lng: "-",
+            is_admin: true,
           },
         }
       );

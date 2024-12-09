@@ -41,8 +41,9 @@ export function NewsList() {
         {
           params: {
             type: "news",
-            lat: latLng.lat,
-            lng: latLng.lng,
+            lat: "-",
+            lng: "-",
+            is_admin: true,
           },
         }
       );

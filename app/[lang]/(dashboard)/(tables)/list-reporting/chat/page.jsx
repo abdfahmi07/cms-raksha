@@ -331,7 +331,7 @@ export function ChatPage() {
       ws.current.onmessage = (event) => {
         const parsedData = JSON.parse(event.data);
 
-        if (parsedData.type === "message") {
+        if (parsedData.type === "fetch-message") {
           messageMutation.mutate(parsedData);
         }
 

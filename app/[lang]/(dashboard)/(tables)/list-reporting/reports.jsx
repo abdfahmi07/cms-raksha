@@ -579,9 +579,9 @@ export function Reports() {
           );
         }
 
-        if (parsedData.type === "message") {
-          messageMutation.mutate(parsedData);
-        }
+        // if (parsedData.type === "fetch-message") {
+        //   messageMutation.mutate(parsedData);
+        // }
       };
 
       ws.current.onclose = () => {

@@ -92,7 +92,7 @@ const NewsSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
     }
   };
 
-  const createEWS = async (payloads) => {
+  const createNews = async (payloads) => {
     try {
       await axios.post(
         `https://api-rakhsa.inovatiftujuh8.com/api/v1/news`,
@@ -129,7 +129,7 @@ const NewsSheet = ({ open, getListNews, detailNews, onClose, selectedId }) => {
       });
     } else {
       startTransition(async () => {
-        await createEWS(addedNews);
+        await createNews(addedNews);
         toast.success("Successfully Added");
         getListNews();
       });
