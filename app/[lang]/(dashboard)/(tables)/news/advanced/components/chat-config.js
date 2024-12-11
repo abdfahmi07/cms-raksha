@@ -18,6 +18,7 @@ export const getMessages = async (data) => {
       {
         chat_id,
         sender_id: user.user.id,
+        is_agent: true,
       },
       {
         headers: {

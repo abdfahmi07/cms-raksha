@@ -35,7 +35,6 @@ const Messages = ({
   handleReply,
   replayData,
   handleForward,
-
   handlePinMessage,
   pinnedMessages,
 }) => {

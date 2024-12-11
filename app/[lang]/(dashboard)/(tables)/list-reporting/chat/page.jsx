@@ -423,8 +423,8 @@ export function ChatPage() {
                             <Messages
                               key={`message-list-${i}`}
                               message={message}
-                              contact={chats?.recipient}
-                              profile={chats?.recipient}
+                              contact={message?.user}
+                              profile={message?.user}
                               onDelete={onDelete}
                               index={i}
                               selectedChatId={selectedChatId}
