@@ -1,3 +1,4 @@
+/* Style the dropdown container */
 .pac-container {
-  z-index: 9999;
+  pointer-events: auto !important;
 }

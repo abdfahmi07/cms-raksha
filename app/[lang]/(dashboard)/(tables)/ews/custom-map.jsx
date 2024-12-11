@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { GoogleMapApiKey } from "./constant";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import "./style/custom.css";
 
 const libraries = ["places"];
 
@@ -93,12 +94,14 @@ const CustomMap = ({ markerPosition, handleMarkerPosition, detailEWS }) => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "300px" }}>
-      <input
-        ref={inputRef}
-        type="text"
-        placeholder="Search location"
-        className="border-[1.5px] border-black/25 outline-none py-2 px-3 rounded-lg text-sm w-full"
-      />
+      <div>
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="Search location"
+          className="border-[1.5px] border-black/25 outline-none py-2 px-3 rounded-lg text-sm w-full"
+        />
+      </div>
       <GoogleMap
         center={center}
         zoom={12}

@@ -163,7 +163,7 @@ export function ChatPage() {
   };
 
   const messageMutation = useMutation({
-    mutationFn: sendMessageWS,
+    mutationFn: refetchMessage,
     onSuccess: () => {
       queryClient.invalidateQueries("messages");
     },

@@ -48,7 +48,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import "./style/custom.css";
 import CustomMap from "./custom-map";
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
